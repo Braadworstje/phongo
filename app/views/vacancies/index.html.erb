@@ -1,0 +1,10 @@
+<h1> Overzicht van vacatures</h1>
+<div id= "row">
+	<div class="span6 offset3">
+<% @vacancies.each do |v| %>
+	<h3><%= link_to v.titel, v %></h3>
+	<%= v.description %><br>
+	<%= v.vacancy_region %>
+<% end %>
+</div>
+</div>
