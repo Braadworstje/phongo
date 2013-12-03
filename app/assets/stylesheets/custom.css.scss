@@ -44,12 +44,13 @@ table {
 }
 input{
   border: 1px solid #dcdddf;
-  width: 195px;
+  width: 225px;
   height: 25px;
   margin: 5px 0px;
   color: #aeb2b5;
   padding: 0px 30px 0px 5px;
   float: left;
+
 }
 .link_input_icon{
   background-image: url("icons/source.jpg");
@@ -106,7 +107,7 @@ body{
   #profile_background{
     height: 120px;
     width: 240px;
-    background-image: url("clients/Jack Daniels/profile_background.jpg");
+    background-image: url("/assets/clients/Jack Daniels/profile_background.jpg");
     float: left;
     margin-bottom: 60px;
   }
@@ -232,12 +233,14 @@ body{
       height: 40px;
       width: 240px;
       border-left: 5px solid #fff;
+      position: relative;
     }
     .box_240px ul li .menu_icon{
       width: 16px;
       height: 16px;
-      float: right;
-      margin: 12px 10px;
+      position: absolute;
+      top: 12px;
+      right: 10px;
     }
     .box_240px ul li:hover{
       background-color: #f8f4f1;
@@ -268,7 +271,7 @@ body{
       background-image: url("icons/qualities-16.png");
     }
     .box_240px ul li.vacancies .menu_icon{
-      background-image: url("vacancies-16.png");
+      background-image: url("icons/vacancies-16.png");
     }
     .box_240px ul li.courses .menu_icon{
       background-image: url("icons/courses-16.png");
@@ -276,8 +279,11 @@ body{
     .box_240px ul li a{
       color: #8d8070;
       font-size: 12px;
-      margin: 15px 10px;
+      padding: 15px 10px;
       float: left;
+      height: 40px;
+      width: 240px;
+      display: block;
     }
 #content_right{
   width: 710px;
@@ -363,14 +369,14 @@ table.requirements td{
   position: relative;
 }
 #add_video{
-  width: 220px;
-  height: 90px;
+  width: 230px;
+  height: 100px;
   float: left;
   padding: 5px;
   position: relative;
 }
 #add_video .button{
-  margin-right: -10px;
+  margin: 0px -10px -10px 0px;
 }
 #add_picture{
   background-image: url("clients/Jack Daniels/dummy2.jpg");
