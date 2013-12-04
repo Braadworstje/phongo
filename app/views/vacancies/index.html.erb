@@ -2,9 +2,9 @@
 <div id= "row">
 	<div class="span6 offset3">
 <% @vacancies.each do |v| %>
-	<h3><%= link_to v.titel, v %></h3>
+	<h3><%= link_to v.title, v %></h3>
 	<%= v.description %><br>
-	<%= v.vacancy_region %>
+	<%= v.address %>
 <% end %>
 </div>
 </div>

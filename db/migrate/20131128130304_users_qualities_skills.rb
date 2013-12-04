@@ -1,6 +1,6 @@
 class UsersQualitiesSkills < ActiveRecord::Migration
   def change
-  	create_table :users_qualities_skills, :id => false do |t|
+  	create_table :users_qualities_skills do |t|
   		t.references :user
   		t.references :quality
   		t.references :skill

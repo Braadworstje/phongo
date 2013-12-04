@@ -12,3 +12,18 @@
 <% current_user.skills.each do |s| %>
 	<%= s.skill %>
 <% end %>
+
+<p>
+  <b>Bijpassende vacatures</b><br>
+
+  <% @vacancies.each do |v|%>
+
+    <% if @matchscore[v] > 0 %>
+      <b>Functieomschrijving</b><br>
+      <%= v.title %><br>
+
+      <b>Kwaliteitenscore</b><br>
+      <%= @matchscore[v] %> (<%= (@matchscore[v].to_f) /5 * 100 %> %)<br><br>
+    <% end %>
+  <% end %>
+</p>

@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20131128135825) do
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 
-  create_table "users_qualities_skills", id: false, force: true do |t|
+  create_table "users_qualities_skills", force: true do |t|
     t.integer "user_id"
     t.integer "quality_id"
     t.integer "skill_id"
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 20131128135825) do
     t.string   "image"
   end
 
-  create_table "vacancies_qualities_skills", id: false, force: true do |t|
+  create_table "vacancies_qualities_skills", force: true do |t|
     t.integer "vacancy_id"
     t.integer "quality_id"
     t.integer "skill_id"

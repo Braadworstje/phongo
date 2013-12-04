@@ -33,7 +33,7 @@ end
   protected
 
 	def authorize
-    redirect_to login_url, alert: "you need to login" if current_user.nil?
+    redirect_to signin_url, alert: "you need to login" if current_user.nil?
     end
   end
 

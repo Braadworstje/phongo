@@ -9,6 +9,12 @@ class VacanciesController < ApplicationController
 
   def new
   	@vacancy = Vacancy.new
+
+    @qualities = Quality.all
+    @skills = Skill.all
+
+    @vacancy.qualities.build
+    @vacancy.skills.build
   end
 
   def edit
@@ -17,7 +23,15 @@ end
 
   def create 
   	@vacancy = Vacancy.create(vacancy_params)
+
   		if @vacancy.save
+        params[:quality_id].split(',').each do |id|
+          @vacancy.qualities << Quality.find(id)
+        end
+
+        params[:skill_id].split(',').each do |id|
+          @vacancy.skills << Skill.find(id)
+        end
   			redirect_to vacancies_path, notice: 'Vacature geplaatst!'
   		else
   			render action: "new"

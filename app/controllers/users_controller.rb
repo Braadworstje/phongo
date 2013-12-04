@@ -3,13 +3,28 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new(params[:id])
-    #@qualities = Quality.new(params[:id])
-    #@skills = Skill.new(params[:id])
+
+    @qualities = Quality.all
+    @skills = Skill.all
+
     @user.qualities.build
     @user.skills.build
   
   end
+  
+  def show
+    @user = User.find(params[:id])
 
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
+      if @user.qualities.nil?
+        redirect_to @werknemer
+      else
+        match(@user)
+      end
+    end
+  end
 
  def edit
 
@@ -38,14 +53,19 @@ def destroy
 
   def create
     @user = User.new(user_params)
-    #@qualities = Quality.new(params[:id])
-    #@skills = Skill.new(params[:id])
 
-    #@user.users_qualities_skills.create( :user_id => @user.id, :quality_id => @qualities.id, :skill_id => @skills.id)
-
+    #@user.qualities << Quality.find_by_id(params[:quality_id])
 
     if @user.save
-      flash[:notice] = "you are a user now!"
+      params[:quality_id].split(',').each do |id|
+        @user.qualities << Quality.find(id)
+      end
+
+      params[:skill_id].split(',').each do |id|
+        @user.skills << Skill.find(id)
+      end
+
+      flash[:notice] = "User profile created"
       sign_in @user
       redirect_to root_url
     else
@@ -53,11 +73,35 @@ def destroy
     end
   end
 
+def match(user)
+    @user = user
+    @vacancies = Vacancy.all
+    
+    @matchscore = {}
+    @matchscore.default = 0
+
+    @userqualities = [] unless @userqualities
+
+    @user.qualities.each do |uqs|
+      @userqualities << uqs
+    end
+
+    @vacancies.each do |vt|
+      vt.qualities.each do |q|
+        for userquality in @userqualities
+          if userquality == q
+            @matchscore[vt] += 1
+          end
+        end
+      end
+    end
+  end
+
 private
 
 def user_params 
   params.require(:user).permit(
-     :email, :password, :password_confirmation, :admin, :first_name, :last_name, :quality_id, :skill_id, 
+     :email, :password, :password_confirmation, :admin, :first_name, :last_name, :quality_id, :skill_id, {:quality_ids => []},
       {:qualities_attributes => [:quality]}, {:skills_attributes => [:skill]}
   )
 end

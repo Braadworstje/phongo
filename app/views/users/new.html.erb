@@ -19,19 +19,10 @@
       <%= f.label "Bevestig wachtwoord" %>
       <%= f.password_field :password_confirmation %>
 
-      <%= f.fields_for :qualities do |q| %>
+      <%= f.label "Selecteer kwaliteiten" %>
+      <%= select_tag(:quality_id, options_for_select(@qualities.collect{ |q| [q.quality, q.id] }), {:multiple => true,  class: 'chosen-quality-select'}) %><br>
 
-          <%= q.label :quality %><br>
-          <%= q.text_field :quality %><br><br>
-          
-      <% end %>
-
-      <%= f.fields_for :skills do |sk| %>
-
-      <%= sk.label :skill %><br>
-      <%= sk.text_field :skill %><br><br>
-
-      <% end %>
+      <%= select_tag(:skill_id, options_for_select(@skills.collect{ |s| [s.skill, s.id] }), {:multiple => true, class: 'chosen-quality-select'}) %><br>
 
 
       <%= f.submit "Registreren", class: "btn btn-large btn-primary" %>
