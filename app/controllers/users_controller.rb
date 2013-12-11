@@ -9,7 +9,6 @@ class UsersController < ApplicationController
 
     @user.qualities.build
     @user.skills.build
-  
   end
   
   def show
@@ -26,85 +25,92 @@ class UsersController < ApplicationController
     end
   end
 
- def edit
-
-  @user = User.find(params[:id])
-# @user.find(params[:id])
+  def edit
+    @user = User.find(params[:id])
     if @user.save
       redirect_to user_path
     end
   end
 
-def update
- @user = User.find(params[:id])
- if @user.update_attributes(user_params)
-    redirect_to dashboard_path
-  else
-    render :action => :edit
-  end
-end
-
-
-def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    redirect_to root_url
-  end
-
-  def create
-    @user = User.new(user_params)
-
-    #@user.qualities << Quality.find_by_id(params[:quality_id])
-
-    if @user.save
-      params[:quality_id].split(',').each do |id|
-        @user.qualities << Quality.find(id)
-      end
-
-      params[:skill_id].split(',').each do |id|
-        @user.skills << Skill.find(id)
-      end
-
-      flash[:notice] = "User profile created"
-      sign_in @user
-      redirect_to root_url
+  def update
+   @user = User.find(params[:id])
+   if @user.update_attributes(user_params)
+      redirect_to dashboard_path
     else
-      render 'new'
+      render :action => :edit
     end
   end
 
-def match(user)
+
+  def destroy
+      @user = User.find(params[:id])
+      @user.destroy
+      redirect_to root_url
+    end
+
+    def create
+      @user = User.new(user_params)
+
+      #@user.qualities << Quality.find_by_id(params[:quality_id])
+
+      if @user.save
+        params[:quality_id].split(',').each do |id|
+          @user.qualities << Quality.find(id)
+        end
+
+        params[:skill_id].split(',').each do |id|
+          @user.skills << Skill.find(id)
+        end
+
+        flash[:notice] = "User profile created"
+        sign_in @user
+        redirect_to root_url
+      else
+        render 'new'
+      end
+    end
+
+  def match(user)
     @user = user
     @vacancies = Vacancy.all
     
     @matchscore = {}
     @matchscore.default = 0
 
-    @userqualities = [] unless @userqualities
+    @qualitiestotal = 0
+
+    @userqualities = []
+
+    @matchingqualities = {}
 
     @user.qualities.each do |uqs|
       @userqualities << uqs
+      @qualitiestotal += 1
     end
 
     @vacancies.each do |vt|
+        
+      @matchingqualities[vt] = []
+
       vt.qualities.each do |q|
         for userquality in @userqualities
           if userquality == q
             @matchscore[vt] += 1
+            @matchingqualities[vt] << q.quality
           end
         end
       end
     end
   end
 
-private
+  private
 
-def user_params 
-  params.require(:user).permit(
-     :email, :password, :password_confirmation, :admin, :first_name, :last_name, :quality_id, :skill_id, {:quality_ids => []},
-      {:qualities_attributes => [:quality]}, {:skills_attributes => [:skill]}
-  )
-end
+  def user_params 
+    params.require(:user).permit(
+       :email, :password, :password_confirmation, :admin, :first_name, :last_name, :quality_id, :skill_id, {:quality_ids => []},
+        {:qualities_attributes => [:quality]}, {:skills_attributes => [:skill]}
+    )
+  end
 end
 
 #def person_params
