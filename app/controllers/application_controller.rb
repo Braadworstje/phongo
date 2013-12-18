@@ -5,6 +5,36 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :current_user?, :is_admin?, :authorize
 
+  def match(user)
+    @user = user
+    @vacancies = Vacancy.all
+    
+    @matchscore = {}
+    @matchscore.default = 0
+
+    @qualitiestotal = 0.0
+    @userqualities = []
+
+    @matchingqualities = {}
+
+    @user.qualities.each do |uqs|
+      @userqualities << uqs
+      @qualitiestotal = @qualitiestotal + 1.0
+    end
+
+    @vacancies.each do |vt|
+      @matchingqualities[vt] = []
+
+      vt.qualities.each do |q|
+        for userquality in @userqualities
+          if userquality == q
+            @matchingqualities[vt] << q.quality
+            @matchscore[vt] = @matchingqualities[vt].size / @qualitiestotal * 100
+          end
+        end
+      end      
+    end
+  end
 
  private
  
@@ -40,5 +70,7 @@ end
   def admin?
     if current_user && current_user.admin?
   end
+
+
 end
 

@@ -5,25 +5,41 @@
   
 </h3>
 
+<b> qualities </b>
 <% current_user.qualities.each do |d| %>
 	<%= d.quality %>
-<% end %>
+<% end %><br><br>
 
+<b> skills </b>
 <% current_user.skills.each do |s| %>
 	<%= s.skill %>
-<% end %>
+<% end %><br><br>
 
-<p>
   <b>Bijpassende vacatures</b><br>
 
   <% @vacancies.each do |v|%>
 
     <% if @matchscore[v] > 0 %>
+      <b>Functie titel<b><br>
+      <%= v.title %><br><br>
+
       <b>Functieomschrijving</b><br>
-      <%= v.title %><br>
+      <%= v.description %><br><br>
 
       <b>Kwaliteitenscore</b><br>
-      <%= @matchscore[v] %> (<%= (@matchscore[v].to_f) /5 * 100 %> %)<br><br>
+
+      amount: <%= @matchingqualities[v].size.to_f %><br>
+      total: <%= @qualitiestotal.to_f %><br><br>
+      <%= @matchscore[v].to_f %>%<br><br>
+
+
+
+      <%= @qualitiestotal %><br><br>
+
     <% end %>
+
+    <b>Matching qualities: </b><br>
+    <%= @matchingqualities[v].map(&:inspect).join(', ').gsub('"', '') %><br><br>
+
   <% end %>
 </p>

@@ -14,14 +14,10 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
 
+    match(@user)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
-      if @user.qualities.nil?
-        redirect_to @werknemer
-      else
-        match(@user)
-      end
     end
   end
 
@@ -70,38 +66,7 @@ class UsersController < ApplicationController
       end
     end
 
-  def match(user)
-    @user = user
-    @vacancies = Vacancy.all
-    
-    @matchscore = {}
-    @matchscore.default = 0
 
-    @qualitiestotal = 0
-
-    @userqualities = []
-
-    @matchingqualities = {}
-
-    @user.qualities.each do |uqs|
-      @userqualities << uqs
-      @qualitiestotal += 1
-    end
-
-    @vacancies.each do |vt|
-        
-      @matchingqualities[vt] = []
-
-      vt.qualities.each do |q|
-        for userquality in @userqualities
-          if userquality == q
-            @matchscore[vt] += 1
-            @matchingqualities[vt] << q.quality
-          end
-        end
-      end
-    end
-  end
 
   private
 
